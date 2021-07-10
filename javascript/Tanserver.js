@@ -1,6 +1,3 @@
-
-//use encapsulation to prevent confilct with user code
-
 /**
  * @param {String}  host Hostname of tanserver
  * @param {Integer} port Port of tanserver 
@@ -56,24 +53,23 @@ function Tanserver(host, port){
             }
             
             ws.addEventListener("open", function(e){
-                try 
-                {
-                    ws.send(makePacket(userApi, jsonString));
-                }
-                catch(err)
-                {
-                    ws.close("Unable to send packet");
-                    console.log(err);
-                    self.postMessage("failure");
-                    return;
-                }
+                ws.send(makePacket(userApi, jsonString));
             });
 
             ws.addEventListener('message', function (e) {
                 ws.close(1000);
                 console.log('Message from tanserver: ', e.data);
                 self.postMessage("success");
-                return;
+            });
+
+            ws.addEventListener('error', function(e){
+                if(ws != undefined)
+                {
+                    ws.close(e.data);
+                }
+
+                console.log(e.data);
+                self.postMessage("failure");
             });
             
         }

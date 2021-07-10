@@ -21,8 +21,8 @@ function Tanserver(host, port){
      * @param  {String} jsonString Parameter of API as json 
      * @return {String} return header {"user_api":"...","json_length":"..."}\r\n
      */
-    let makeHeader = (userApi, jsonString) => {
-        return `{"user_api":"${userApi}","json_length":"${jsonString}"}\r\n`;
+    let makeHeader = (userApi, jsonLength) => {
+        return `{"user_api":"${userApi}","json_length":${jsonLength}}\r\n`;
     }
 
     /**

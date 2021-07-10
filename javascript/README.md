@@ -30,3 +30,15 @@ soon...
 | Param `jsonString`        | The JSON string that will be sent to the server.
 | Param `successCallback`   | Function to be called if getJSON can send the packet and receives answer form server.
 | Param `failureCallback`   | Function to be called if something fails I.e cannot connect through WebSocket, cannot send package or cannot receive answer.
+
+### Common causes of errors
+
+1. The client is offline or the server is not started.
+
+2. SSL handshake failed.
+
+3. API does not exist.
+
+4. `jsonString` is an invalid JSON string.
+
+5. `jsonString` is too large and exceeds `client_max_json_size`.

@@ -82,7 +82,7 @@ function Tanserver(host, port){
      * @param {Function} failureCallback (Optional) Function executed if getJSON fails
      */
      _this.getJSON = (userApi, jsonString, successCallback = undefined, failureCallback = undefined) =>{
-        if(typeof(worker) == "undefined") 1000
+        if(typeof(worker) == "undefined")
         {
             worker = createWorker(WorkerActions);
         }

@@ -43,10 +43,7 @@ class Tanserver
                         //self.postMessage("failure") otherwise
                         
                         //TODO: throw connection error and return failure
-                        //TODO: add SSL
-                        const ws = new WebSocket(`ws://${e.data.host}:${e.data.port}`);
-
-                        //TODO: hostname verify (?)
+                        const ws = new WebSocket(`wss://${e.data.host}:${e.data.port}`);
                         
                         ws.addEventListener("open", function(e){
                             ws.send(this.makePacket(userApi, jsonString));

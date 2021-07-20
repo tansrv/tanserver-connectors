@@ -25,7 +25,7 @@ Copy `Tanserver.js` directory into your project and include it.
     }
 
     function fail(){
-        alert("FAIL!!");
+        alert("Error! Disconnected from Tanserver");
     }
 
     tan = new Tanserver("tanserver.org", 2579);
@@ -41,7 +41,7 @@ Copy `Tanserver.js` directory into your project and include it.
 | Param `userApi`                       | API provided by the server.
 | Param `jsonString`                    | The JSON string that will be sent to the server.
 | Param `successCallback(JSON value)`   | Function to be called if getJSON can send the packet and receives answer form server, getJSON takes a parameter `value` that will contain the response from tanserver
-| Param `failureCallback`               | Function to be called if something fails I.e cannot connect through WebSocket, cannot send package or cannot receive answer.
+| Param `failureCallback` [`optional`]  | Function to be called if something fails I.e cannot connect through WebSocket, cannot send package or cannot receive answer.
 
 ### Common causes of errors
 

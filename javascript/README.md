@@ -18,8 +18,19 @@ Copy `Tanserver.js` directory into your project and include it.
 ## Example
 
 ```javascript
-soon...
-```
+<script src="../Tanserver.js"></script>
+<script defer>
+    function succ(data){
+        alert(data);
+    }
+
+    function fail(){
+        alert("FAIL!!");
+    }
+
+    tan = new Tanserver("docs-tanserver.org", 2579);
+    var recvd = tan.getJSON("API", "{}", succ, fail);
+</script>```
 
 ### getJSON()
 

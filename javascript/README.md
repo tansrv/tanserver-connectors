@@ -28,7 +28,7 @@ soon...
 | Description                           | Get JSON answer from the server.
 | Param `userApi`                       | API provided by the server.
 | Param `jsonString`                    | The JSON string that will be sent to the server.
-| Param `successCallback(JSON value)`   | Function to be called if getJSON can send the packet and receives answer form server, it takes a parameter `value` that will contains the response from tanserver
+| Param `successCallback(JSON value)`   | Function to be called if getJSON can send the packet and receives answer form server, getJSON takes a parameter `value` that will contain the response from tanserver
 | Param `failureCallback`               | Function to be called if something fails I.e cannot connect through WebSocket, cannot send package or cannot receive answer.
 
 ### Common causes of errors

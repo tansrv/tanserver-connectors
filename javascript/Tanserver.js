@@ -82,10 +82,10 @@
 
 
     /**
-     * @param {String}   userApi         API name
-     * @param {String}   jsonString      Parameter of API as json  
-     * @param {Function} successCallback (Optional) Function executed if json is obtained successfully 
-     * @param {Function} failureCallback (Optional) Function executed if getJSON fails
+     * @param {String}   userApi                     API name
+     * @param {String}   jsonString                  Parameter of API as json  
+     * @param {Function} successCallback(Json value) Function executed if json is obtained successfully, it take 'value' as parameter that will contain the response from tanserver
+     * @param {Function} failureCallback [Optional]  Function executed if getJSON fails
      */
      _this.getJSON = (userApi, jsonString, successCallback, failureCallback = undefined) =>{
 

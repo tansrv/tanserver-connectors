@@ -30,7 +30,8 @@ Copy `Tanserver.js` directory into your project and include it.
 
     tan = new Tanserver("docs-tanserver.org", 2579);
     var recvd = tan.getJSON("API", "{}", succ, fail);
-</script>```
+</script>
+```
 
 ### getJSON()
 

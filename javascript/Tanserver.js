@@ -1,3 +1,12 @@
+/*
+ * Copyright (C) tanserver.org
+ * Copyright (C) Daniele Affinita
+ * Copyright (C) Chen Daye
+ *
+ * Feedback: tanserver@outlook.com
+ */
+
+
 /**
  * @param {String}  host Hostname of tanserver
  * @param {Integer} port Port of tanserver 

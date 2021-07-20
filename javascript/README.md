@@ -18,7 +18,7 @@ Copy `Tanserver.js` directory into your project and include it.
 ## Example
 
 ```javascript
-<script src="../Tanserver.js"></script>
+<script src="Tanserver.js"></script>
 <script defer>
     function succ(data){
         alert(data);

@@ -62,7 +62,6 @@
 
             ws.addEventListener('message', function (e) {
                 ws.close(1000);
-                console.log('Message from tanserver: ', e.data);
                 self.postMessage(e.data);
             });
 
@@ -88,7 +87,7 @@
      * @param {Function} successCallback (Optional) Function executed if json is obtained successfully 
      * @param {Function} failureCallback (Optional) Function executed if getJSON fails
      */
-     _this.getJSON = (userApi, jsonString, successCallback = undefined, failureCallback = undefined) =>{
+     _this.getJSON = (userApi, jsonString, successCallback, failureCallback = undefined) =>{
 
         if(typeof(worker) == "undefined")
         {
@@ -107,7 +106,7 @@
             {
                 if(successCallback != undefined)
                 {
-                    successCallback();
+                    successCallback(e.data);
                 }
             }
         }

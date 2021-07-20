@@ -2,7 +2,7 @@
  * @param {String}  host Hostname of tanserver
  * @param {Integer} port Port of tanserver 
  */
-function Tanserver(host, port){
+ function Tanserver(host, port){
     let worker;
     let _this = this;
 
@@ -16,30 +16,34 @@ function Tanserver(host, port){
         return new Worker(url);
     }
 
-    /**
-     * @param  {String} userApi    API name
-     * @param  {String} jsonString Parameter of API as json 
-     * @return {String} return header {"user_api":"...","json_length":"..."}\r\n
-     */
-    let makeHeader = (userApi, jsonLength) => {
-        return `{"user_api":"${userApi}","json_length":${jsonLength}}\r\n`;
-    }
+    /* Contains all worker code */ 
+    let WorkerActions = async (e) => {
 
-    /**
-     * @param  {String} userApi    API name
-     * @param  {String} jsonString Parameter of API as json 
-     * @return {String} return packet using custom protocol
-     */    
-    let makePacket = (userApi, jsonString) => {
-        return makeHeader(userApi, jsonString.length) + jsonString;
-    }
+        /**
+         * @param  {String} userApi    API name
+         * @param  {String} jsonString Parameter of API as json 
+         * @return {String} return header {"user_api":"...","json_length":"..."}\r\n
+         */
+        let makeHeader = (userApi, jsonLength) => {
+            return `{"user_api":"${userApi}","json_length":${jsonLength}}\r\n`;
+        }
 
-    let WorkerActions = (e) => {
+        /**
+         * @param  {String} userApi    API name
+         * @param  {String} jsonString Parameter of API as json 
+         * @return {String} return packet using custom protocol
+         */    
+        let makePacket = (userApi, jsonString) => {
+            return makeHeader(userApi, jsonString.length) + jsonString;
+        }
+
         if(e.data.action == "run")
         {
             //self.postMessage("success") if json is obtained successfully
             //self.postMessage("failure") otherwise
-            const ws = undefined;
+            let userApi = e.data.userApi;
+            let jsonString = e.data.jsonString;
+            let ws = undefined;
 
             try 
             {
@@ -59,7 +63,7 @@ function Tanserver(host, port){
             ws.addEventListener('message', function (e) {
                 ws.close(1000);
                 console.log('Message from tanserver: ', e.data);
-                self.postMessage("success");
+                self.postMessage(e.data);
             });
 
             ws.addEventListener('error', function(e){
@@ -75,6 +79,9 @@ function Tanserver(host, port){
         }
     }
 
+
+
+
     /**
      * @param {String}   userApi         API name
      * @param {String}   jsonString      Parameter of API as json  
@@ -82,6 +89,7 @@ function Tanserver(host, port){
      * @param {Function} failureCallback (Optional) Function executed if getJSON fails
      */
      _this.getJSON = (userApi, jsonString, successCallback = undefined, failureCallback = undefined) =>{
+
         if(typeof(worker) == "undefined")
         {
             worker = createWorker(WorkerActions);
@@ -89,17 +97,17 @@ function Tanserver(host, port){
 
         // handle answer from worker
         worker.onmessage = function (e){
-            if(e.data == "success")
+            if(e.data == "failure"){
+                if(failureCallback != undefined)
+                {
+                    failureCallback();
+                }
+            }
+            else
             {
                 if(successCallback != undefined)
                 {
                     successCallback();
-                }
-            }
-            else if(e.data == "failure"){
-                if(failureCallback != undefined)
-                {
-                    failureCallback();
                 }
             }
         }
@@ -107,6 +115,10 @@ function Tanserver(host, port){
         // send a message to worker
         worker.postMessage({'action':'run',
                             'host':host,
-                            'port':port});
+                            'port':port,
+                            'userApi':userApi,
+                            'jsonString':jsonString
+                        });
+
     }
 }

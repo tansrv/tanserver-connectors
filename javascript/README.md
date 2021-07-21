@@ -20,16 +20,16 @@ Copy `Tanserver.js` directory into your project and include it.
 ```javascript
 <script src="Tanserver.js"></script>
 <script defer>
-    function succ(data){
-        alert(data);
-    }
-
-    function fail(){
-        alert("Error! Disconnected from Tanserver");
-    }
-
     tan = new Tanserver("tanserver.org", 2579);
-    var recvd = tan.getJSON("API", "{}", succ, fail);
+
+    tan.getJSON("API", "{}", function(jsonString, err) {
+        if (err != null) {
+            alert(err);
+            return;
+        }
+
+        alert(jsonString);
+    });
 </script>
 ```
 

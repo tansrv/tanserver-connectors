@@ -2,8 +2,6 @@
  * Copyright (C) tanserver.org
  * Copyright (C) Daniele Affinita
  * Copyright (C) Chen Daye
- *
- * Feedback: tanserver@outlook.com
  */
 
 
@@ -11,7 +9,7 @@
  * @param {String}  host Hostname of tanserver
  * @param {Integer} port Port of tanserver 
  */
- function Tanserver(host, port){
+function Tanserver(host, port) {
     let worker;
     let _this = this;
 
@@ -21,7 +19,7 @@
      */
     let createWorker = (func) => {
         var blob = new Blob(['self.onmessage = ', func.toString()], { type: 'text/javascript' });
-        var url = URL.createObjectURL(blob);
+        var url  = URL.createObjectURL(blob);
         return new Worker(url);
     }
 
@@ -46,87 +44,61 @@
             return makeHeader(userApi, jsonString.length) + jsonString;
         }
 
-        if(e.data.action == "run")
+        if (e.data.action == "run")
         {
-            //self.postMessage("success") if json is obtained successfully
-            //self.postMessage("failure") otherwise
-            let userApi = e.data.userApi;
+            let ws         = undefined;
+            let userApi    = e.data.userApi;
             let jsonString = e.data.jsonString;
-            let ws = undefined;
 
-            try 
-            {
-                ws = new WebSocket(`wss://${e.data.host}:${e.data.port}`);
-            }
-            catch(err) 
-            {
-                console.log(err);
-                self.postMessage("failure");
-                return;
-            }
-            
-            ws.addEventListener("open", function(e){
+            ws = new WebSocket(`wss://${e.data.host}:${e.data.port}`);
+
+            ws.onopen = function() {
                 ws.send(makePacket(userApi, jsonString));
-            });
+            }
 
-            ws.addEventListener('message', function (e) {
-                ws.close(1000);
-                self.postMessage(e.data);
-            });
+            ws.onmessage = function(e) {
+                ws.close();
 
-            ws.addEventListener('error', function(e){
-                if(ws != undefined)
-                {
-                    ws.close(e.data);
+                self.postMessage({
+                    'error': null,
+                    'jsonString': e.data.toString()
+                });
+            }
+
+            ws.onclose = function(e) {
+
+                if (e.code != 1000) {
+                    self.postMessage({
+                        'error': "Network Error",
+                        'jsonString': null
+                    });
                 }
-
-                console.log(e.data);
-                self.postMessage("failure");
-            });
-            
+            }
         }
     }
 
-
-
-
     /**
-     * @param {String}   userApi                     API name
-     * @param {String}   jsonString                  Parameter of API as json  
-     * @param {Function} successCallback(Json value) Function executed if json is obtained successfully, it take 'value' as parameter that will contain the response from tanserver
-     * @param {Function} failureCallback [Optional]  Function executed if getJSON fails
+     * @param {String}   userApi                              API name
+     * @param {String}   jsonString                           Parameter of API as json  
+     * @param {Function} completion(Json value, error string) Function executed if json is obtained successfully, it take 'value' as parameter that will contain the response from tanserver
      */
-     _this.getJSON = (userApi, jsonString, successCallback, failureCallback = undefined) =>{
+     _this.getJSON = (userApi, jsonString, completion) =>{
 
-        if(typeof(worker) == "undefined")
-        {
+        if (typeof(worker) == "undefined") {
             worker = createWorker(WorkerActions);
         }
 
         // handle answer from worker
-        worker.onmessage = function (e){
-            if(e.data == "failure"){
-                if(failureCallback != undefined)
-                {
-                    failureCallback();
-                }
-            }
-            else
-            {
-                if(successCallback != undefined)
-                {
-                    successCallback(e.data);
-                }
-            }
+        worker.onmessage = function(e) {
+            completion(e.data.jsonString, e.data.error);
         }
 
         // send a message to worker
-        worker.postMessage({'action':'run',
-                            'host':host,
-                            'port':port,
-                            'userApi':userApi,
-                            'jsonString':jsonString
-                        });
-
+        worker.postMessage({'action': 'run',
+                            'host': host,
+                            'port': port,
+                            'userApi': userApi,
+                            'jsonString': jsonString
+        });
     }
 }

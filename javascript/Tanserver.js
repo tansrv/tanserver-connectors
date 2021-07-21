@@ -18,13 +18,14 @@ function Tanserver(host, port) {
      * @return {Worker}        Return a Worker instance executing func
      */
     let createWorker = (func) => {
-        var blob = new Blob(['self.onmessage = ', func.toString()], { type: 'text/javascript' });
-        var url  = URL.createObjectURL(blob);
-        return new Worker(url);
+        var blob = new Blob(['self.onmessage = ', func.toString()],
+                            {type: 'text/javascript'});
+
+        return new Worker(URL.createObjectURL(blob));
     }
 
-    /* Contains all worker code */ 
-    let WorkerActions = async (e) => {
+    /* Contains all worker code.  */ 
+    let WorkerActions = async(e) => {
 
         /**
          * @param  {String} userApi    API name
@@ -39,21 +40,16 @@ function Tanserver(host, port) {
          * @param  {String} userApi    API name
          * @param  {String} jsonString Parameter of API as json 
          * @return {String} return packet using custom protocol
-         */    
+         */
         let makePacket = (userApi, jsonString) => {
             return makeHeader(userApi, jsonString.length) + jsonString;
         }
 
-        if (e.data.action == "run")
-        {
-            let ws         = undefined;
-            let userApi    = e.data.userApi;
-            let jsonString = e.data.jsonString;
-
-            ws = new WebSocket(`wss://${e.data.host}:${e.data.port}`);
+        if (e.data.action == "run") {
+            var ws = new WebSocket(`wss://${e.data.host}:${e.data.port}`);
 
             ws.onopen = function() {
-                ws.send(makePacket(userApi, jsonString));
+                ws.send(makePacket(e.data.userApi, e.data.jsonString));
             }
 
             ws.onmessage = function(e) {
@@ -67,6 +63,7 @@ function Tanserver(host, port) {
 
             ws.onclose = function(e) {
 
+                /* 1000: Normal closure  */
                 if (e.code != 1000) {
                     self.postMessage({
                         'error': "Network Error",
@@ -78,22 +75,22 @@ function Tanserver(host, port) {
     }
 
     /**
-     * @param {String}   userApi                              API name
-     * @param {String}   jsonString                           Parameter of API as json  
-     * @param {Function} completion(Json value, error string) Function executed if json is obtained successfully, it take 'value' as parameter that will contain the response from tanserver
+     * @param {String}   userApi                   API name
+     * @param {String}   jsonString                Parameter of API as json  
+     * @param {Function} completion(jsonData, err) Function executed if json is obtained successfully, it take 'value' as parameter that will contain the response from tanserver
      */
-     _this.getJSON = (userApi, jsonString, completion) =>{
+    _this.getJSON = (userApi, jsonString, completion) => {
 
         if (typeof(worker) == "undefined") {
             worker = createWorker(WorkerActions);
         }
 
-        // handle answer from worker
+        /* Handle answer from worker.  */
         worker.onmessage = function(e) {
             completion(e.data.jsonString, e.data.error);
         }
 
-        // send a message to worker
+        /* Send a message to worker.  */
         worker.postMessage({'action': 'run',
                             'host': host,
                             'port': port,

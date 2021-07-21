@@ -14,34 +14,36 @@ Copy `Tanserver.js` directory into your project and include it.
 | Firefox Android | 14+
 | Safari iOS      | 6+
 
-
 ## Example
 
 ```javascript
 <script src="Tanserver.js"></script>
 <script defer>
+    /* Initialize connection information.  */
     tan = new Tanserver("tanserver.org", 2579);
 
-    tan.getJSON("API", "{}", function(jsonString, err) {
+    /* Get JSON string from the server.  */
+    tan.getJSON("API", "{}", function(jsonData, err) {
         if (err != null) {
-            alert(err);
+            alert(err);  /* An error has occurred, notify the user of network failure.  */
             return;
         }
 
-        alert(jsonString);
+        /* Got a JSON string, parse it here.  */
+        var json = JSON.parse(jsonData);
+        ...
     });
 </script>
 ```
 
 ### getJSON()
 
-| Declaration                           | `void` getJSON(String userApi, String jsonString, Function successCallback, `optional` failureCallback)
-| :------                               | :------
-| Description                           | Get JSON answer from the server.
-| Param `userApi`                       | API provided by the server.
-| Param `jsonString`                    | The JSON string that will be sent to the server.
-| Param `successCallback(JSON value)`   | Function to be called if getJSON can send the packet and receives answer form server, getJSON takes a parameter `value` that will contain the response from tanserver
-| Param `failureCallback` [`optional`]  | Function to be called if something fails I.e cannot connect through WebSocket, cannot send package or cannot receive answer.
+| Declaration                       | `void` getJSON(String userApi, String jsonString, completion(jsonData, err))
+| :------                           | :------
+| Description                       | Get JSON answer from the server.
+| Param `userApi`                   | API provided by the server.
+| Param `jsonString`                | The JSON string that will be sent to the server.
+| Param `completion(jsonData, err)` | If an error occurs, `err` will not be null.
 
 ### Common causes of errors
 

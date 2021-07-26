@@ -1,6 +1,6 @@
 ## Install
 
-Copy `Tanserver.js` directory into your project and include it.
+Copy `tanserver.js` into your project and include it.
 
 ### Requirements
 
@@ -17,10 +17,10 @@ Copy `Tanserver.js` directory into your project and include it.
 ## Example
 
 ```javascript
-<script src="Tanserver.js"></script>
+<script src="./tanserver.js"></script>
 <script defer>
     /* Initialize connection information.  */
-    tan = new Tanserver("tanserver.org", 2579);
+    var tan = new Tanserver("tanserver.org", 2579);
 
     /* Get JSON string from the server.  */
     tan.getJSON("API", "{}", function(jsonData, err) {
@@ -38,7 +38,7 @@ Copy `Tanserver.js` directory into your project and include it.
 
 ### getJSON()
 
-| Declaration                       | `void` getJSON(String userApi, String jsonString, completion(jsonData, err))
+| Declaration                       | getJSON(userApi: string, jsonString: string, completion(jsonData, err): function)
 | :------                           | :------
 | Description                       | Get JSON answer from the server.
 | Param `userApi`                   | API provided by the server.
@@ -54,5 +54,3 @@ Copy `Tanserver.js` directory into your project and include it.
 3. API does not exist.
 
 4. `jsonString` is an invalid JSON string.
-
-5. `jsonString` is too large and exceeds `client_max_json_size`.

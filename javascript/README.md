@@ -23,7 +23,7 @@ Copy `tanserver.js` into your project and include it.
     var tan = new Tanserver("tanserver.org", 2579);
 
     /* Get JSON string from the server.  */
-    tan.getJSON("API", "{}", function(jsonData, err) {
+    tan.getJSON('API', '{}', function(jsonData, err) {
         if (err != null) {
             alert(err);  /* An error has occurred, notify the user of network failure.  */
             return;

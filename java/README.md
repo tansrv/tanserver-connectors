@@ -41,8 +41,8 @@ tan.getJSON("api", "{}", new Tanserver.Callback() {
 | Description        | Get JSON string from the server.
 | Param `userApi`    | API provided by the server.
 | Param `jsonString` | The JSON string that will be sent to the server.
-| Param `callback`   | Need to implement `void onSuccess (String jsonString)` and `void onFailure (IOException err)`. When the request is successful, `onSuccess()` will be called, otherwise `onFailure()` will be called.
-| Note               | Android should add `<uses-permission android:name="android.permission.INTERNET"/>` in `AndroidManifest.xml`
+| Param `callback`   | Needs to implement `void onSuccess(String jsonString)` and `void onFailure(IOException err)`. When the request is successful, `onSuccess()` will be called, otherwise `onFailure()` will be called.
+| Note               | Android must add `<uses-permission android:name="android.permission.INTERNET"/>` in `AndroidManifest.xml`
 
 ### Common reasons why onFailure() is called
 

@@ -43,7 +43,7 @@ Copy `tanserver.js` into your project and include it.
 | Description                       | Get JSON answer from the server.
 | Param `userApi`                   | API provided by the server.
 | Param `jsonString`                | The JSON string that will be sent to the server.
-| Param `completion(jsonData, err)` | jsonData will contain json answer from tanserver, if an error occurs, `err` will not be null.
+| Param `completion(jsonData, err)` | `jsonData` will contain JSON answer from tanserver. If an error occurs, `err` will not be null.
 
 ### Common causes of errors
 

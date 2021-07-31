@@ -35,13 +35,12 @@ tan.getJSON(userApi: "api",
 
 ### getJSON()
 
-| Declaration        | func getJSON(userApi: String, jsonString: String, completion: @escaping (Data?, NWError?) -> Void)
-| :------            | :------
-| Description        | Get JSON data from the server.
-| Param `userApi`    | API provided by the server.
-| Param `jsonString` | The JSON string that will be sent to the server.
-| Param `completion` | If an error occurs, `NWError` will not be nil.
-| Note               | This is an asynchronous function.
+| Declaration                       | func getJSON(userApi: String, jsonString: String, completion: @escaping (Data?, NWError?) -> Void)
+| :------                           | :------
+| Description                       | Get JSON data from the server.
+| Param `userApi`                   | API provided by the server.
+| Param `jsonString`                | The JSON string that will be sent to the server.
+| Param `completion(Data, NWError)` | `Data` will contain JSON answer from tanserver. If an error occurs, `NWError` will not be nil.
 
 ### Common causes of errors
 

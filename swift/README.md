@@ -52,4 +52,4 @@ tan.getJSON(userApi: "api",
 
 4. `jsonString` is an invalid JSON string.
 
-5. `jsonString` is too large and exceeds `client_max_json_size`.
+5. `jsonString` is too large and exceeds `client_max_body_size`.
